@@ -1,4 +1,22 @@
 import socket
+import sys
+import tkinter
+
+root=tkinter.Tk()
+root.title("食堂利用管理システム")
+
+
+message=tkinter.Label()
+message.pack()
+
+def attend(student_id):
+	print(student_id)
+
+student_id_textbox=tkinter.Entry()
+student_id_textbox.bind("<Key-RETURN>",attend)
+student_id_textbox.pack()
+
+root.mainloop()
 
 while True:
     try:
@@ -12,3 +30,4 @@ while True:
     except BaseException  as ex:       
         #TODO:BaseException必須?
         print(ex+"原因不明の例外です．")
+
