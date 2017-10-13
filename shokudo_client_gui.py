@@ -1,7 +1,10 @@
-#coding: utf-8
+#coding: UTF-8
 import wx
 
-class GUI():
+from shokudo_client_event import event
+
+
+class gui():
     def __init__(self):
         self.string=[]
 
@@ -14,17 +17,11 @@ class GUI():
 
         self.frame.SetTitle(u'shokudo-kanri-system')
 
-        self.frame.Bind(wx.EVT_KEY_DOWN,onEVT_KEY_DOWN)
-        self.frame.Bind(wx.EVT_KEY_UP,onEVT_KEY_UP)
+        self.frame.Bind(wx.EVT_KEY_DOWN,event.onEVT_KEY_DOWN)
+        self.frame.Bind(wx.EVT_KEY_UP,event.onEVT_KEY_UP)
 
         self.app.SetTopWindow(self.frame)
         self.frame.Show(True)
 
     def mainloop(self):
         self.app.MainLoop()
-
-    def onEVT_KEY_DOWN(self,event):
-        self.string+=event.GetKeyCode()
-
-    def onEVT_KEY_UP(self,event):
-        print(self.string)

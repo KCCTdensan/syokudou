@@ -1,5 +1,5 @@
 #coding: UTF-8
-from syokudou_client_gui import GUI
+from shokudo_client_gui import gui
 from tkinter import *
 import socket
 import sys
@@ -23,7 +23,7 @@ def key(event):
         
 
 if __name__=='__main__':
-    gui=GUI()
+    gui=gui()
     gui.mainloop()
 
 #top = Tk()
