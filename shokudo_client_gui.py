@@ -6,7 +6,7 @@ from shokudo_client_event import event
 
 class gui():
     def __init__(self):
-        self.string=[]
+        self.eventprocess=event();
 
         self.app=wx.App()
         self.frame=wx.Frame(None)
@@ -17,8 +17,8 @@ class gui():
 
         self.frame.SetTitle(u'shokudo-kanri-system')
 
-        self.frame.Bind(wx.EVT_KEY_DOWN,event.onEVT_KEY_DOWN)
-        self.frame.Bind(wx.EVT_KEY_UP,event.onEVT_KEY_UP)
+        self.frame.Bind(wx.EVT_KEY_DOWN,self.eventprocess.onEVT_KEY_DOWN)
+        self.frame.Bind(wx.EVT_KEY_UP,self.eventprocess.onEVT_KEY_UP)
 
         self.app.SetTopWindow(self.frame)
         self.frame.Show(True)
