@@ -6,7 +6,6 @@ import csv
 import datetime
 
 customers=[]
-
 with socket.socket()as listen_sock:
     listen_sock.bind(("",55555))
     listen_sock.listen(1)
@@ -29,3 +28,12 @@ with socket.socket()as listen_sock:
                 print("接続が切断されました．LANケーブル，ハブの電源を確認して下さい．")
             except BaseException  as ex:
                 print(ex+"原因不明の例外です．")
+def save(n):
+    """
+    save
+    customers.txtに指定文字列と半角スペースを書き込む
+    それだけ
+    """
+    r = open('customers.txt','a')
+    r.write(n + " ")
+    r.close()
