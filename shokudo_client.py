@@ -2,6 +2,7 @@
 
 import wx
 import socket
+import sys
 
 
 string=u""
@@ -44,7 +45,7 @@ textbox.SetMaxLength(16)
 student_id_label_text=wx.StaticText(frame,-1,u"gakusekiNo")
 student_id_label_text.SetFont(font)
 
-message_label_text=wx.StaticText(frame,wx.ID_ANY,u"gakusekiNo wo nyuuryoku sitekudasai")
+message_label_text=wx.StaticText(frame,wx.ID_ANY,u"gakusekiNo wo nyuryoku shite kudasai")
 message_label_text.SetFont(font)
 
 vsizer=wx.BoxSizer(wx.VERTICAL)
