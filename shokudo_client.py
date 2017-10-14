@@ -5,7 +5,11 @@ import socket
 import sys
 
 
-string=""
+message={
+    b"SUCCEEDED":"ご利用ありがとうございます。",
+    b"INVALID_ID":"不正な学籍番号です。",
+    b"DUPLICATED":"多重利用です。"
+}
 
 def onEVT_TEXT_ENTER(evt):
     try:
@@ -13,16 +17,12 @@ def onEVT_TEXT_ENTER(evt):
         if not student_id:
             return
         sock=socket.socket()
-        sock.connect(("192.168.11.8",55555))
+        #sock.connect(("192.168.11.8",55555))
+        sock.connect(("localhost",55555))
         sock.sendall(student_id.encode())
-        error_code=sock.recv(1024).decode()
-        if error_code=="0":
-            message_label_text.SetLabel("ご利用ありがとうございます。")
-        elif error_code=="1":
-            message_label_text.SetLabel("不正な学籍番号です。")
-        elif error_code=="2":
-            message_label_text.SetLabel("多重利用です。")
+        error_code=sock.recv(1024)
 
+        message_label_text.SetLabel(message[error_code])
         textbox.Clear()
 
     except ConnectionResetError:
@@ -32,7 +32,7 @@ def onEVT_TEXT_ENTER(evt):
         #TODO:BaseException必須?
         print(ex+"原因不明の例外です．")
 
-        
+
 app=wx.App()
 frame=wx.Frame(None)
 

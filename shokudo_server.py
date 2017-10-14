@@ -1,9 +1,11 @@
 ﻿#TODO:停電対策(耐障害)
 
+from enum import Enum
 import socket
 import re
 import csv
 import datetime
+    
 
 customers=[]
 
@@ -19,12 +21,12 @@ with socket.socket()as listen_sock:
                 print(student_id)
                 if re.match(r"\d{6}$",student_id):
                     if student_id in customers:
-                        client_sock.sendall(b"2")
+                        client_sock.sendall(b"DUPLICATED")
                     else:
                         customers.append(student_id)
-                        client_sock.sendall(b"0")
+                        client_sock.sendall(b"SUCCEEDED")
                 else:
-                    client_sock.sendall(b"1")
+                    client_sock.sendall(b"INVALID_ID")
             except ConnectionResetError:
                 print("接続が切断されました．LANケーブル，ハブの電源を確認して下さい．")
             except BaseException  as ex:
