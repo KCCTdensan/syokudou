@@ -1,39 +1,43 @@
-#coding: UTF-8
+﻿#coding:UTF-8
 
 import wx
 import socket
 import sys
 
 
-string=u""
+string=""
 
 def onEVT_TEXT_ENTER(evt):
     try:
         student_id=textbox.GetValue()
         if not student_id:
             return
-        #sock=socket.socket()
-        #sock.connect(("192.168.11.8",55555))
-        #sock.sendall(student_id.encode())
-        #message_label_text.SetLabel(sock.recv(1024).decode())
-        message_label_text.SetLabel(u"Input:"+student_id)
+        sock=socket.socket()
+        sock.connect(("192.168.11.8",55555))
+        sock.sendall(student_id.encode())
+        error_code=sock.recv(1024).decode()
+        if error_code=="0":
+            message_label_text.SetLabel("ご利用ありがとうございます。")
+        elif error_code=="1":
+            message_label_text.SetLabel("不正な学籍番号です。")
+        elif error_code=="2":
+            message_label_text.SetLabel("多重利用です。")
+
         textbox.Clear()
 
     except ConnectionResetError:
-        #print(u"�ڑ����ؒf����܂����DLAN�P�[�u���C�n�u�̓d�����m�F���ĉ������D")
-        print(u"setsudan")
+        print("接続が切断されました．LANケーブル，ハブの電源を確認して下さい．")
 
     except BaseException  as ex:       
-        #TODO:BaseException�K�{?
-        #print(ex+u"�����s���̗�O�ł��D")
-        print(u"reigai")
+        #TODO:BaseException必須?
+        print(ex+"原因不明の例外です．")
 
         
 app=wx.App()
 frame=wx.Frame(None)
 
 frame.Maximize()
-frame.SetTitle(u"shokudo-kanri-system")
+frame.SetTitle("食堂管理システム")
 
 font=wx.Font(100, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
@@ -42,10 +46,10 @@ textbox.Bind(wx.EVT_TEXT_ENTER,onEVT_TEXT_ENTER)
 textbox.SetFont(font)
 textbox.SetMaxLength(16)
 
-student_id_label_text=wx.StaticText(frame,-1,u"gakusekiNo")
+student_id_label_text=wx.StaticText(frame,wx.ID_ANY,"学籍番号:")
 student_id_label_text.SetFont(font)
 
-message_label_text=wx.StaticText(frame,wx.ID_ANY,u"gakusekiNo wo nyuryoku shite kudasai")
+message_label_text=wx.StaticText(frame,wx.ID_ANY,"学籍番号を入力してください")
 message_label_text.SetFont(font)
 
 vsizer=wx.BoxSizer(wx.VERTICAL)
@@ -58,10 +62,6 @@ vsizer.Add(hsizer,flag=wx.EXPAND|wx.ALIGN_CENTER|wx.RIGHT|wx.LEFT|wx.TOP,border=
 vsizer.Add(message_label_text,flag=wx.RIGHT|wx.LEFT,border=100)
 
 frame.SetSizer(vsizer)
-
-#sizer=wx.FlexGridSizer(cols=2, vgap=1, hgap=5)
-#sizer.Add(textbox,flag=wx.GROW)
-#frame.SetSizer(sizer)
 
 app.SetTopWindow(frame)
 frame.Show(True)

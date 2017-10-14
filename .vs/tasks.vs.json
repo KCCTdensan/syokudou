@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "タスク-shokudo_client",
+      "appliesTo": "shokudo_client.py",
+      "type": "launch"
+    }
+  ]
+}

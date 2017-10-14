@@ -1,4 +1,4 @@
-#TODO:停電対策(耐障害)
+﻿#TODO:停電対策(耐障害)
 
 import socket
 import re
@@ -19,12 +19,12 @@ with socket.socket()as listen_sock:
                 print(student_id)
                 if re.match(r"\d{6}$",student_id):
                     if student_id in customers:
-                        client_sock.sendall("多重利用です!!!!!".encode())
+                        client_sock.sendall(b"2")
                     else:
                         customers.append(student_id)
-                        client_sock.sendall(b"ok")
+                        client_sock.sendall(b"0")
                 else:
-                    client_sock.sendall("不正な学生証です．".encode())
+                    client_sock.sendall(b"1")
             except ConnectionResetError:
                 print("接続が切断されました．LANケーブル，ハブの電源を確認して下さい．")
             except BaseException  as ex:
