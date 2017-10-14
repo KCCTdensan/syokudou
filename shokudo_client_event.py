@@ -1,5 +1,7 @@
 #coding: UTF-8
+
 import socket
+
 
 class event():
     def __init__(self):
@@ -11,6 +13,7 @@ class event():
             
             pass
         else:
+
             self.string+=[keycode]
         print("keydown",evt.GetKeyCode())
 
