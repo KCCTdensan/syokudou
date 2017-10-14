@@ -1,6 +1,5 @@
 ﻿#TODO:停電対策(耐障害)
 
-from enum import Enum
 import socket
 import re
 import csv
@@ -28,6 +27,6 @@ with socket.socket()as listen_sock:
                 else:
                     client_sock.sendall(b"INVALID_ID")
             except ConnectionResetError:
-                print("接続が切断されました．LANケーブル，ハブの電源を確認して下さい．")
+                print("接続が切断されました。LANケーブル、ハブの電源を確認して下さい。")
             except BaseException  as ex:
-                print(ex+"原因不明の例外です．")
+                print(ex+"原因不明の例外です。")

@@ -15,6 +15,7 @@ def onEVT_TEXT_ENTER(evt):
     try:
         student_id=textbox.GetValue()
         if not student_id:
+            message_label_text.SetLabel("学籍番号を入力してください")
             return
         sock=socket.socket()
         #sock.connect(("192.168.11.8",55555))
@@ -26,11 +27,15 @@ def onEVT_TEXT_ENTER(evt):
         textbox.Clear()
 
     except ConnectionResetError:
-        print("接続が切断されました．LANケーブル，ハブの電源を確認して下さい．")
+        print("接続が切断されました。LANケーブル、ハブの電源を確認して下さい。")
+        wx.MessageBox("接続が切断されました。LANケーブル、ハブの電源を確認して下さい。",style=wx.OK)
+        textbox.Clear()
 
     except BaseException  as ex:       
         #TODO:BaseException必須?
-        print(ex+"原因不明の例外です．")
+        print("原因不明の例外です．")
+        wx.MessageBox("プログラムで原因不明の例外が発生しました。",style=wx.OK)
+        textbox.Clear()
 
 
 app=wx.App()
