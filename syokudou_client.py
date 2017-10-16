@@ -21,6 +21,7 @@ def key(event):
         print(ex+"原因不明の例外です．")
 
 top = Tk()
+top.attributes("-zoomed", "1")
 message_label_text = StringVar()
 message_label = Label(top,textvariable=message_label_text,font = ("",40))
 message_label.pack(side=TOP,fill=Y,expand=1)
@@ -28,5 +29,6 @@ student_id_textbox_text = StringVar()
 student_id_textbox = Entry(top,bd=5,width = 10,textvariable=student_id_textbox_text)
 student_id_textbox.pack()
 student_id_textbox.bind("<Return>",key)
+student_id_textbox.focus_set()
 
 top.mainloop()
