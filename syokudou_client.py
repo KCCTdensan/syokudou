@@ -1,11 +1,14 @@
 from tkinter import *
 import socket
+import os
 
 def key(event):
     try:
         student_id=student_id_textbox.get()
         if not student_id:
                 return
+        if student_id=="poweroff":
+            os.system("poweroff")
         sock=socket.create_connection(("192.168.11.8",55555),timeout=3)
         sock.sendall(student_id.encode())
         message_label_text.set(sock.recv(1024).decode())
