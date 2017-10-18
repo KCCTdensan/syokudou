@@ -16,11 +16,14 @@ initial_message_label_text="学籍番号を入力してください"
 def onEVT_TEXT_ENTER(evt):
     try:
         student_id=textbox.GetValue()
+
         if not student_id:
             message_label_text.SetLabel(initial_message_label_text)
             return
+
         if student_id=="poweroff":
             os.system("poweroff")
+            return
 
         sock=socket.create_connection(("localhost",55555),timeout=3)
         sock.sendall(student_id.encode())
