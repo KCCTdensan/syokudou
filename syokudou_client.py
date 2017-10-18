@@ -19,8 +19,7 @@ def key(event):
         student_id_textbox_text.set("")
 
 root = Tk()
-root.attributes("-zoomed", "1") #Linux
-#root.state("zoomed") #Windows
+root.attributes("-fullscreen", True)
 message_label_text = StringVar()
 message_label = Label(root,textvariable=message_label_text,font = ("",40),wraplength="25c") #TODO:cと書く公式ドキュメント探し途中
 message_label.pack(side=TOP,fill=Y,expand=1)
