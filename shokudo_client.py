@@ -76,6 +76,6 @@ vsizer.Add(message_label_text,flag=wx.RIGHT|wx.LEFT,border=100)
 frame.SetSizer(vsizer)
 
 app.SetTopWindow(frame)
-frame.Show(True)
+frame.ShowFullScreen(True)
 
 app.MainLoop()
