@@ -1,5 +1,6 @@
 ﻿import socket
 import re
+import csv
 import datetime
     
 
@@ -26,7 +27,7 @@ def load():
     for toCust in  r.readlines():
         if toCust[7:17] == str(datetime.date.today()):
             customers.append(toCust[0:6])
-r.close()
+    r.close()
 
 with socket.socket()as listen_sock:
     listen_sock.bind(("",55555))
