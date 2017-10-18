@@ -6,7 +6,7 @@ customers=[]
 
 with socket.socket()as listen_sock:
     listen_sock.bind(("",55555))
-    listen_sock.listen()
+    listen_sock.listen(1)
     with open("log.csv","a") as csvfile:
         while True:
             try:
