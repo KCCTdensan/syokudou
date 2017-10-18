@@ -20,6 +20,7 @@ def key(event):
 
 root = Tk()
 root.attributes("-fullscreen", True)
+root.config(cursor="none")
 message_label_text = StringVar()
 message_label = Label(root,textvariable=message_label_text,font = ("",40),wraplength="25c") #TODO:cと書く公式ドキュメント探し途中
 message_label.pack(side=TOP,fill=Y,expand=1)
