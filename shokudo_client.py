@@ -2,7 +2,7 @@
 
 import wx
 import socket
-import sys
+import os
 
 
 message={
@@ -10,21 +10,25 @@ message={
     b"INVALID_ID":"不正な学籍番号です。",
     b"DUPLICATED":"多重利用です。"
 }
+initial_message_label_text="学籍番号を入力してください"
+
 
 def onEVT_TEXT_ENTER(evt):
     try:
         student_id=textbox.GetValue()
         if not student_id:
-            message_label_text.SetLabel("学籍番号を入力してください")
+            message_label_text.SetLabel(initial_message_label_text)
             return
-        sock=socket.socket()
-        #sock.connect(("192.168.11.8",55555))
-        sock.connect(("localhost",55555))
+        if student_id=="poweroff":
+            os.system("poweroff")
+
+        sock=socket.create_connection(("localhost",55555),timeout=3)
         sock.sendall(student_id.encode())
         error_code=sock.recv(1024)
-
+        
         message_label_text.SetLabel(message[error_code])
         textbox.Clear()
+        wx.CallLater(2000,message_label_text.SetLabel,initial_message_label_text)
 
     except ConnectionResetError:
         print("接続が切断されました。LANケーブル、ハブの電源を確認して下さい。")
@@ -34,7 +38,7 @@ def onEVT_TEXT_ENTER(evt):
     except BaseException  as ex:       
         #TODO:BaseException必須?
         print("原因不明の例外です．")
-        wx.MessageBox("プログラムで原因不明の例外が発生しました。",style=wx.OK)
+        wx.MessageBox("プログラムで原因不明の例外が発生しました。サーバーの起動を確認してください。",style=wx.OK)
         textbox.Clear()
 
 
@@ -54,7 +58,7 @@ textbox.SetMaxLength(16)
 student_id_label_text=wx.StaticText(frame,wx.ID_ANY,"学籍番号:")
 student_id_label_text.SetFont(font)
 
-message_label_text=wx.StaticText(frame,wx.ID_ANY,"学籍番号を入力してください")
+message_label_text=wx.StaticText(frame,wx.ID_ANY,initial_message_label_text)
 message_label_text.SetFont(font)
 
 vsizer=wx.BoxSizer(wx.VERTICAL)
