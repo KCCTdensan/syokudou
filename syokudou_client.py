@@ -31,7 +31,7 @@ student_id_textbox.pack()
 student_id_textbox.bind("<Return>",key)
 student_id_textbox.focus_set()
 countdown_label_text = StringVar()
-countdown_label = Label(None,text="高専祭まであと"+str((datetime.datetime(2017,10,29)-datetime.datetime.now()).days)+"日",font = ("",40),wraplength="25c")
+countdown_label = Label(None,text="高専祭まであと"+str((datetime.datetime(2017,10,28)-datetime.datetime.now()).days+1)+"日",font = ("",40))
 countdown_label.pack(side=TOP,fill=Y,expand=1,padx=5, pady=5)
 
 root.mainloop()
