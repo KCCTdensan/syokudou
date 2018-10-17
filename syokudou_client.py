@@ -12,9 +12,9 @@ def key(event):
                 return
         if student_id=="poweroff":
             os.system("poweroff")
-        sock=socket.create_connection(("192.168.11.8",55555),timeout=3)
-        sock.sendall(student_id.encode())
-        message_label_text.set(sock.recv(1024).decode())
+        with socket.create_connection(("192.168.11.8",55555),timeout=3) as sock:
+            sock.sendall(student_id.encode())
+            message_label_text.set(sock.recv(1024).decode())
         root.after(2000,lambda:message_label_text.set(""))
     except BaseException as ex:       
         message_label_text.set(ex)

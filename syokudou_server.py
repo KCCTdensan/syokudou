@@ -1,6 +1,7 @@
 import socket
 import re
 import datetime
+import os
 
 customers=[]
 
@@ -13,6 +14,8 @@ with socket.socket() as listen_sock:
             try:
                 client_sock,addr=listen_sock.accept()
                 student_id=client_sock.recv(1024).decode()
+                if student_id=="poweroff":
+                    os.system("poweroff")
                 csvfile.write(str(datetime.datetime.today())+","+student_id+"\n")
                 print(student_id)
                 if re.match(r"\d{6}$",student_id):
