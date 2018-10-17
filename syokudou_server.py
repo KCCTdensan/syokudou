@@ -4,7 +4,8 @@ import datetime
 
 customers=[]
 
-with socket.socket()as listen_sock:
+with socket.socket() as listen_sock:
+    listen_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     listen_sock.bind(("",55555))
     listen_sock.listen(1)
     with open("log.csv","a") as csvfile:
