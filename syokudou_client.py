@@ -3,16 +3,26 @@ import socket
 import os
 import datetime
 
-deadline=datetime.datetime(2018,11,3)
+deadline=datetime.datetime(2019,11,2)
 
 def key(event):
     try:
+        serverIP=""
+        f = open("config.txt")
+        configs = f.readlines()
+        for config in configs:
+            if config.startswith("ip"):
+                serverIP = config.strip().split(":")[1]
+        f.close()
+        
         student_id=student_id_textbox.get()
         if not student_id:
                 return
         if student_id=="poweroff":
             os.system("poweroff")
-        sock=socket.create_connection(("192.168.11.8",55555),timeout=3)
+        if student_id=="exit":
+            sys.exit(0)
+        sock=socket.create_connection((serverIP,55555),timeout=3)
         sock.sendall(student_id.encode())
         message_label_text.set(sock.recv(1024).decode())
         root.after(2000,lambda:message_label_text.set(""))
