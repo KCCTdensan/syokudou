@@ -3,7 +3,7 @@ import socket
 import os
 import datetime
 
-deadline=datetime.datetime(2018,11,3)
+deadline=datetime.datetime(2019,11,2)
 
 def key(event):
     try:
@@ -12,7 +12,7 @@ def key(event):
                 return
         if student_id=="poweroff":
             os.system("poweroff")
-        sock=socket.create_connection(("192.168.11.8",55555),timeout=3)
+        sock=socket.create_connection(("192.168.3.5",55555),timeout=3)
         sock.sendall(student_id.encode())
         message_label_text.set(sock.recv(1024).decode())
         root.after(2000,lambda:message_label_text.set(""))
