@@ -1,7 +1,6 @@
 import express from "express"
 import WebSocket, { WebSocketServer } from "ws"
 import { createServer } from "node:http"
-import { EventEmitter } from "node:events"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -11,6 +10,7 @@ import initDB, { Activity } from "./db.js"
 const { DB_FILE, HID_FILE } = process.env
 if(!DB_FILE || !HID_FILE) {
   console.error("$DB_FILE and $HID_FILE must be set!")
+  console.error("README.md読んで!")
   process.exit(1)
 }
 
