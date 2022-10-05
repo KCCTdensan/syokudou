@@ -39,7 +39,7 @@ async function main() {
   }
 
   hid(HID_FILE).on("submit", async code => {
-    const validator = /\d{6}/
+    const validator = /^\d{6}$/
     if(!validator.test(code)) {
       send({ code, msg: "invalid" })
       return

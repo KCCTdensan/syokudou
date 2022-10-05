@@ -50,6 +50,7 @@ Linuxでの例:
 
 カードリーダーを探す。
 `/dev/hidrawX`みたいなやつが欲しい。
+いつものやつはUnitechうんたら製。
 
 ```
 % node devices
