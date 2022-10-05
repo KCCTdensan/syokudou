@@ -4,12 +4,12 @@ import { createServer } from "node:http"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
-import hid from "./hid.js"
+import hid, { hidev } from "./hid.js"
 import initDB, { Activity } from "./db.js"
 
-const { DB_FILE, HID_FILE } = process.env
-if(!DB_FILE || !HID_FILE) {
-  console.error("$DB_FILE and $HID_FILE must be set!")
+const { DB_FILE, HID_FILES } = process.env
+if(!DB_FILE || !HID_FILES) {
+  console.error("$DB_FILE and $HID_FILES must be set!")
   console.error("README.md読んで!")
   process.exit(1)
 }
@@ -38,7 +38,8 @@ async function main() {
     })
   }
 
-  hid(HID_FILE).on("submit", async code => {
+  HID_FILES.split(",").forEach(hid)
+  hidev.on("submit", async code => {
     const validator = /^\d{6}$/
     if(!validator.test(code)) {
       send({ code, msg: "invalid" })

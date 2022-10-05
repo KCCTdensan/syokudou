@@ -1,12 +1,12 @@
 import { HID } from "node-hid"
 import { EventEmitter } from "node:events"
 
-const event = new EventEmitter()
+export const hidev = new EventEmitter()
 
 export default function init(path) {
   const dev = new HID(path)
   dev.on("data", handler)
-  return event
+  return hidev
 }
 
 let buf = ""
@@ -20,7 +20,7 @@ function handler(data) {
         buf += 0
         break
       case c == 0x28:
-        event.emit("submit", buf)
+        hidev.emit("submit", buf)
         buf = ""
         break
     }

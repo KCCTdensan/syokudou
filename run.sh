@@ -9,6 +9,6 @@ cd `dirname $0`
 ) &
 
 . app.env
-export DB_FILE HID_FILE
+export DB_FILE HID_FILES
 
-node app
+exec sudo -E node app

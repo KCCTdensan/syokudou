@@ -65,5 +65,6 @@ Linuxでの例:
 そして自動で起動するようにする。
 
 ```
-% echo "~/syokudou/run.sh &" >> ~/.xprofile
+% mkdir -p ~/.config/lxsession/LXDE-pi
+% echo @`readlink -f ~/syokudou/run.sh` >> ~/.config/lxsession/LXDE-pi/autostart
 ```
