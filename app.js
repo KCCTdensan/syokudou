@@ -26,8 +26,11 @@ async function main() {
 
   app.use(express.static(join(__dirname, "pub")))
 
-  const send = msg => {
-    const data = JSON.stringify(msg)
+  const send = body => {
+    const data = JSON.stringify({
+      ...body,
+      now: Date.now(),
+    })
     wss.clients.forEach(client => {
       if(client.readyState === WebSocket.OPEN) {
         client.send(data)
@@ -47,7 +50,13 @@ async function main() {
       order: [["date", "ASC"]],
     })
     if(row && row.event === "used") {
-      send({ code, msg: "used" })
+      const dt = row.date.getTime()
+      if(Date.now() - dt < 3000) {
+        // 3秒以内の再スキャンは認める
+        send({ code, msg: "accept" })
+      } else {
+        send({ code, msg: "used", dt })
+      }
       return
     }
 
@@ -55,6 +64,6 @@ async function main() {
     send({ code, msg: "accept" })
   })
 
-  server.listen(3000)
+  server.listen(process.env.PORT || 3000)
 }
 main()

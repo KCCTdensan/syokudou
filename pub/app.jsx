@@ -5,8 +5,17 @@ const sleep = async ms => new Promise(res => setTimeout(res, ms))
 const App = () => {
   const [code, setCode] = useState("-")
   const [msg, setMsg] = useState("")
+  const [dt, setDt] = useState(0)
+  const [now, setNow] = useState(0)
 
+  const [clearRq, setClearRq] = useState(0)
+  const clearRqRef = useRef()
+  clearRqRef.current = clearRq
+
+  const dispDur = 5000
   const clear = () => {
+    // there are another requests
+    if(Date.now() - clearRqRef.current < dispDur) return
     setCode("-")
     setMsg("")
   }
@@ -23,18 +32,35 @@ const App = () => {
   const msgText = msg => {
     switch (msg) {
       case "accept":  return "正常に受け付けました"
-      case "used":    return "既に使用済みのカードです"
-      case "invalid": return "無効なカードです"
+      case "used":    return "既に使用済みです"
+      case "invalid": return "無効なコードです"
     }
+  }
+
+  const timeDiffFmt = (dt, now) => {
+    const ds = (now - dt) / 1000
+    if(ds < 0) return "未来"
+
+    const h = Math.trunc(ds / 3600)
+    if(h) return `${h}時間前`
+
+    const m = Math.trunc(ds / 60)
+    if(m) return `${m}分前`
+
+    const s = Math.trunc(ds)
+    if(s) return `さっき(${s}秒前)`
   }
 
   useEffect(() => {
     async function handler({ data }) {
-      const { code, msg } = JSON.parse(data)
+      const { code, msg, dt, now } = JSON.parse(data)
       setCode(code)
       setMsg(msg)
-      await sleep(5000)
-      clear()
+      setDt(dt || 0)
+      setNow(now)
+      setClearRq(Date.now())
+      await sleep(dispDur)
+      clear(Date.now())
     }
 
     function connect() {
@@ -80,11 +106,21 @@ const App = () => {
         <div
           style={{
             fontSize: "4rem",
+            fontWeight: "bold",
             textAlign: "center",
-            overflow: "visible",
           }}>
           {msgText(msg)}
         </div>
+        {msg === "used" && (
+          <div
+            style={{
+              marginTop: "2rem",
+              fontSize: "3rem",
+              textAlign: "center",
+            }}>
+            最終利用時刻 : {timeDiffFmt(dt, now)}
+          </div>
+        )}
       </main>
       <footer>
         <p
