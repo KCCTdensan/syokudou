@@ -1,0 +1,2 @@
+* * * * * cp /tmp/syokudou.db ~/latest.db
+* * * * * cp /tmp/syokudou.db ~/$(date -I).db

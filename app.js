@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url"
 import hid, { hidev } from "./hid.js"
 import initDB, { Activity } from "./db.js"
 
+const unixDate = ms => Math.trunc(ms / 1000 / 3600 / 24)
+
 const { DB_FILE, HID_FILES } = process.env
 if(!DB_FILE || !HID_FILES) {
   console.error("$DB_FILE and $HID_FILES must be set!")
@@ -51,13 +53,19 @@ async function main() {
       order: [["date", "ASC"]],
     })
     if(row && row.event === "used") {
+      const now = Date.now()
       const dt = row.date.getTime()
-      if(Date.now() - dt < 3000) {
-        // 3秒以内の再スキャンは認める
+
+      // 日付跨いでたら認める
+      if(unixDate(now) !== unixDate(dt)) {
+        await Activity.create({ code, event: "used" })
         send({ code, msg: "accept" })
-      } else {
-        send({ code, msg: "used", dt })
+        return
       }
+
+      // 3秒以内の再スキャンは認める
+      if(now - dt < 3000) send({ code, msg: "accept" })
+      else                send({ code, msg: "used", dt })
       return
     }
 

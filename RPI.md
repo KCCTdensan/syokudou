@@ -68,3 +68,7 @@ Linuxでの例:
 % mkdir -p ~/.config/lxsession/LXDE-pi
 % echo @`readlink -f ~/syokudou/run.sh` >> ~/.config/lxsession/LXDE-pi/autostart
 ```
+
+## 実行
+
+ラズパイの場合，動作が重くなるのでデータベースのファイルはSDカード以外のところに置く。
