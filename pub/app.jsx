@@ -2,6 +2,20 @@ const { useEffect, useRef, useState } = React
 
 const sleep = async ms => new Promise(res => setTimeout(res, ms))
 
+const timeDiffFmt = (dt, now) => {
+  const ds = (now - dt) / 1000
+  if(ds < 0) return "未来"
+
+  const h = Math.trunc(ds / 3600)
+  if(h) return `${h}時間前`
+
+  const m = Math.trunc(ds / 60)
+  if(m) return `${m}分前`
+
+  const s = Math.trunc(ds)
+  if(s) return `さっき(${s}秒前)`
+}
+
 const App = () => {
   const [code, setCode] = useState("-")
   const [msg, setMsg] = useState("")
@@ -35,20 +49,6 @@ const App = () => {
       case "used":    return "既に使用済みです"
       case "invalid": return "無効なコードです"
     }
-  }
-
-  const timeDiffFmt = (dt, now) => {
-    const ds = (now - dt) / 1000
-    if(ds < 0) return "未来"
-
-    const h = Math.trunc(ds / 3600)
-    if(h) return `${h}時間前`
-
-    const m = Math.trunc(ds / 60)
-    if(m) return `${m}分前`
-
-    const s = Math.trunc(ds)
-    if(s) return `さっき(${s}秒前)`
   }
 
   useEffect(() => {
@@ -93,6 +93,7 @@ const App = () => {
       />
       <header>
         <h1>食堂管理システム</h1>
+        <a href="/stats/">統計情報</a>
       </header>
       <main>
         <div

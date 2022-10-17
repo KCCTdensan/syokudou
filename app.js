@@ -28,6 +28,17 @@ async function main() {
 
   app.use(express.static(join(__dirname, "pub")))
 
+  app.get("/api/dump", async (req, res) => {
+    const rows = await Activity.findAll({
+      attributes: ["code", "event", "date"],
+    })
+    const data = rows.map(({ code, event, date }) => ({
+      code, event,
+      date: date.getTime(),
+    }))
+    res.json(data)
+  })
+
   const send = body => {
     const data = JSON.stringify({
       ...body,
