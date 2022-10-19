@@ -51,8 +51,7 @@ async function main() {
     })
   }
 
-  HID_FILES.split(",").forEach(hid)
-  hidev.on("submit", async code => {
+  const onSubmit = async code => {
     const validator = /^\d{6}$/
     if(!validator.test(code)) {
       send({ code, msg: "invalid" })
@@ -61,7 +60,7 @@ async function main() {
 
     const row = await Activity.findOne({
       where: { code },
-      order: [["date", "ASC"]],
+      order: [["date", "DESC"]],
     })
     if(row && row.event === "used") {
       const now = Date.now()
@@ -82,7 +81,11 @@ async function main() {
 
     await Activity.create({ code, event: "used" })
     send({ code, msg: "accept" })
-  })
+  }
+
+  hidev.on("submit", onSubmit)
+  wss.on("connection", ws => ws.on("message", buf => onSubmit(buf.toString())))
+  HID_FILES.split(",").forEach(hid)
 
   server.listen(process.env.PORT || 3000)
 }

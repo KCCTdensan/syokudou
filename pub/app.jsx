@@ -21,6 +21,7 @@ const App = () => {
   const [msg, setMsg] = useState("")
   const [dt, setDt] = useState(0)
   const [now, setNow] = useState(0)
+  const userInput = useRef(null)
 
   const [clearRq, setClearRq] = useState(0)
   const clearRqRef = useRef()
@@ -51,6 +52,14 @@ const App = () => {
     }
   }
 
+  const onSubmit = e => {
+    const data = e.target.value
+    if(!data) return
+    ws.send(data)
+    e.target.value = ""
+    console.log("submitted", data)
+  }
+
   useEffect(() => {
     async function handler({ data }) {
       const { code, msg, dt, now } = JSON.parse(data)
@@ -67,14 +76,16 @@ const App = () => {
       const url = new URL("/ws", location.href)
       url.protocol = "ws"
 
-      const ws = new WebSocket(url)
+      window.ws = new WebSocket(url)
       ws.onmessage = handler
       ws.onclose = async e => {
-        console.warn("socket closed.", e)
+        console.warn("socket closed", e)
         await sleep(1000)
         connect()
       }
     }
+
+    userInput.current.focus()
     connect()
   }, [])
 
@@ -96,6 +107,17 @@ const App = () => {
         <a href="/stats/">統計情報</a>
       </header>
       <main>
+        <input
+          style={{
+            width: "100%",
+            fontSize: "2rem",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+          placeholder="コードを入力……"
+          onKeyPress={e => e.key === "Enter" && onSubmit(e)}
+          ref={userInput}
+        />
         <div
           style={{
             fontSize: "8rem",

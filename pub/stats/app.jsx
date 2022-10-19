@@ -8,7 +8,7 @@ const timeDiffFmt = (dt, now) => {
   const m = Math.trunc((ds - 3600 * h) / 60)
 
   const date = new Date(dt)
-  return `${h}時間と${m}分前 (${date.toLocaleString("ja")})`
+  return `${date.toLocaleString("ja")} (${h}時間と${m}分前)`
 }
 
 const Stats = () => {
@@ -27,19 +27,19 @@ const Stats = () => {
         <a href="/">メインUIに戻る</a>
       </header>
       <main>
-        <table>
+        <table style={{ fontFamily: "monospace" }}>
           <thead>
             <tr>
-              <th>時刻</th>
               <th>学籍番号</th>
+              <th>時刻</th>
               {/*<th>イベント</th>*/}
             </tr>
           </thead>
           <tbody>
             {tab.map(({ code, event, date }, i) => (
               <tr key={i}>
-                <td>{timeDiffFmt(date, Date.now())}</td>
                 <td>{code}</td>
+                <td>{timeDiffFmt(date, Date.now())}</td>
                 {/*<td>{event}</td>*/}
               </tr>
             ))}
